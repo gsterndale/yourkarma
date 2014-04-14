@@ -1,0 +1,65 @@
+#! /usr/bin/ruby
+require 'json'
+require 'uri'
+require 'net/http'
+require 'timeout'
+require 'benchmark'
+require 'pp'
+
+uri = URI('http://hotspot.yourkarma.com/api/status.json')
+
+def failure(message)
+  puts message
+  exit 1
+end
+
+HTTP_ERRORS = [Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+  Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError]
+
+begin
+  response = nil
+  Timeout::timeout(2) { response = Net::HTTP.get_response(uri) }
+  parsed = JSON::load(response.body)
+rescue *HTTP_ERRORS
+  failure "Not connected to a Karma hotspot."
+rescue JSON::ParserError
+  failure "Unexpected response from #{uri}."
+end
+
+begin
+  message = "Network not connected."
+
+  device = parsed.fetch "device"
+  wifi   = device.fetch "wifiinterface"
+  ssid   = wifi.fetch "ssid"
+
+  message = "Unable to determine battery status."
+
+  charging  = device.fetch "charging"
+  battery   = device.fetch "batterypower"
+  print "Battery #{battery}%. "
+  puts charging ? "Charging." : "Not charging."
+
+  message = "Connected to '#{ssid}', but WAN IP address is not assigned."
+
+  wan        = device.fetch "waninterface"
+  ip_address = wan.fetch "ipaddress"
+rescue KeyError
+  failure message
+end
+
+begin
+  benchmark = nil
+  Timeout::timeout(10) do
+    benchmark = Benchmark.realtime do
+      Net::HTTP.get_response(URI('https://www.google.com'))
+    end
+  end
+  benchmark = (benchmark * 10).ceil / 10.0
+rescue Timeout::Error
+  failure "Connected to '#{ssid}' and online, but the tubes are slow!"
+rescue *HTTP_ERRORS
+  failure "Connected to '#{ssid}' and WAN IP address has be assigned, but request to Google failed."
+end
+
+puts "Connected to '#{ssid}' and online! Request to Google took less than #{benchmark} seconds."
