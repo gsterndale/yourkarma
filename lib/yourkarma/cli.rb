@@ -3,7 +3,7 @@ require_relative 'client'
 require_relative 'device'
 require_relative 'benchmarker'
 
-module WhatKarma
+module YourKarma
   class CLI
     attr_accessor :options
 
@@ -86,8 +86,8 @@ module WhatKarma
         optparse = OptionParser.new do |opts|
           opts.banner = <<-BANNER.gsub(/^\s{4}/, '')
             Karma hotspot status
-            Usage: what_karma [options]
-            Example: what_karma --verbose
+            Usage: yourkarma [options]
+            Example: yourkarma --verbose
           BANNER
 
           opts.on('-u', '--url=URL', "Karma hotspot URL") do |url|

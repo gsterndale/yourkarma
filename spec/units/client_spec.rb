@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe WhatKarma::Client do
+describe YourKarma::Client do
   describe "#options" do
-    let(:client)  { WhatKarma::Client.new }
+    let(:client)  { YourKarma::Client.new }
     subject       { client.options } 
     its([:url])  { should match "yourkarma.com" }
   end
 
   describe "#get" do
-    let(:client)    { WhatKarma::Client.new(url: "example.com") }
+    let(:client)    { YourKarma::Client.new(url: "example.com") }
     let(:response)  { double :response, body: '{"device": {"foo": "bar"}}' }
     subject         { client.get }
     before do
@@ -29,7 +29,7 @@ describe WhatKarma::Client do
       end
 
       it "raises ConnectionError" do
-        expect(-> { subject }).to raise_error WhatKarma::Client::ConnectionError
+        expect(-> { subject }).to raise_error YourKarma::Client::ConnectionError
       end
     end
 
@@ -39,7 +39,7 @@ describe WhatKarma::Client do
       end
 
       it "raises ConnectionError" do
-        expect(-> { subject }).to raise_error WhatKarma::Client::ConnectionError
+        expect(-> { subject }).to raise_error YourKarma::Client::ConnectionError
       end
     end
 
@@ -47,7 +47,7 @@ describe WhatKarma::Client do
       let(:response)  { double :response, body: '{ WRONG }' }
 
       it "raises BadResponseError" do
-        expect(-> { subject }).to raise_error WhatKarma::Client::BadResponseError
+        expect(-> { subject }).to raise_error YourKarma::Client::BadResponseError
       end
     end
   end

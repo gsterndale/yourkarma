@@ -2,7 +2,7 @@ require 'uri'
 require 'timeout'
 require 'net/http'
 
-module WhatKarma
+module YourKarma
   class Client
     class ConnectionError < StandardError; end
     class BadResponseError < StandardError; end

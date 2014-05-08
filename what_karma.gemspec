@@ -1,17 +1,17 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'what_karma/version'
+require 'yourkarma/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "what_karma"
-  spec.version       = WhatKarma::VERSION
+  spec.name          = "yourkarma"
+  spec.version       = YourKarma::VERSION
   spec.platform      = Gem::Platform::RUBY
   spec.authors       = ["Greg Sterndale"]
   spec.email         = ["gsterndale@gmail.com"]
   spec.summary       = %q{Karma hotspot status client & CLI}
   spec.description   = %q{Determine connectivity, battery and connection speed for your device.}
-  spec.homepage      = "http://github.com/gsterndale/what_karma"
+  spec.homepage      = "http://github.com/gsterndale/yourkarma"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")

@@ -2,7 +2,7 @@ require "spec_helper"
 
 describe "CLI", ".new" do
   let(:options) { { verbose: true } }
-  subject { WhatKarma::CLI.new options }
+  subject { YourKarma::CLI.new options }
   its(:options) { should eq options }
 end
 
@@ -14,9 +14,9 @@ describe "CLI", ".run" do
     argument_parser = double(:argument_parser, parse: options )
     exit_code       = double(:exit_code)
     cli             = double(:cli, run: exit_code)
-    WhatKarma::CLI::ArgumentParser.stub(:new) { argument_parser }
-    WhatKarma::CLI.stub(:new) { cli }
-    WhatKarma::CLI.run io, arguments
+    YourKarma::CLI::ArgumentParser.stub(:new) { argument_parser }
+    YourKarma::CLI.stub(:new) { cli }
+    YourKarma::CLI.run io, arguments
     expect(cli).to have_received(:run).with { { io: io } }
   end
 end
@@ -29,11 +29,11 @@ describe "CLI", "#run" do
     benchmarker = double(:benchmarker, benchmark: benchmark)
     exit_code   = double(:exit_code)
     reporter    = double(:reporter, report_on: exit_code)
-    WhatKarma::Client.stub(:new)        { client }
-    WhatKarma::Device.stub(:new)        { device }
-    WhatKarma::Benchmarker.stub(:new)   { benchmarker }
-    WhatKarma::CLI::Reporter.stub(:new) { reporter }
-    cli = WhatKarma::CLI.new
+    YourKarma::Client.stub(:new)        { client }
+    YourKarma::Device.stub(:new)        { device }
+    YourKarma::Benchmarker.stub(:new)   { benchmarker }
+    YourKarma::CLI::Reporter.stub(:new) { reporter }
+    cli = YourKarma::CLI.new
     response = cli.run
     expect(reporter).to have_received(:report_on).with(device, benchmark)
     expect(response).to eq(exit_code)

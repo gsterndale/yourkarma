@@ -5,7 +5,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-require File.join(File.expand_path(File.dirname(__FILE__)), "../lib/what_karma.rb")
+require File.join(File.expand_path(File.dirname(__FILE__)), "../lib/yourkarma.rb")
 
 Dir[File.join(File.expand_path(File.dirname(__FILE__)), "support/**/*.rb")].each { |f| require f }
 

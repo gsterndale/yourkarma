@@ -1,15 +1,15 @@
 require 'spec_helper'
 
-describe WhatKarma::Benchmarker do
+describe YourKarma::Benchmarker do
 
   describe "#options" do
-    subject { WhatKarma::Benchmarker.new.options }
+    subject { YourKarma::Benchmarker.new.options }
     its([:timeout])   { should eq 10 }
     its([:benchmark]) { should match "yourkarma.com" }
   end
 
   describe "#benchmark" do
-    let(:benchmarker) { WhatKarma::Benchmarker.new(benchmark: "example.com") }
+    let(:benchmarker) { YourKarma::Benchmarker.new(benchmark: "example.com") }
     let(:response)    { double :response }
     subject           { benchmarker.benchmark }
     before do
@@ -33,7 +33,7 @@ describe WhatKarma::Benchmarker do
       end
 
       it "raises ConnectionError" do
-        expect(-> { subject }).to raise_error WhatKarma::Benchmarker::ConnectionError
+        expect(-> { subject }).to raise_error YourKarma::Benchmarker::ConnectionError
       end
     end
 
@@ -43,7 +43,7 @@ describe WhatKarma::Benchmarker do
       end
 
       it "raises ConnectionError" do
-        expect(-> { subject }).to raise_error WhatKarma::Benchmarker::ConnectionError
+        expect(-> { subject }).to raise_error YourKarma::Benchmarker::ConnectionError
       end
     end
   end

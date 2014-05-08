@@ -3,7 +3,7 @@ require 'timeout'
 require 'net/http'
 require 'benchmark'
 
-module WhatKarma
+module YourKarma
   class Benchmarker
     class ConnectionError < StandardError; end
 

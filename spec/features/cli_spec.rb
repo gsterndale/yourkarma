@@ -4,7 +4,7 @@ require 'webmock/rspec'
 describe "CLI", :vcr do
   let(:io)   { StringIO.new }
   let(:args) { ['--timeout', '10', '--verbose'] }
-  let(:cli)  { WhatKarma::CLI.run(io, args) }
+  let(:cli)  { YourKarma::CLI.run(io, args) }
 
   describe "output" do
     subject do

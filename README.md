@@ -1,15 +1,15 @@
-# WhatKarma
+# yourkarma
 ## Karma hotspot status client & CLI
 
 Determine connectivity, battery and connection speed for your device.
 
 ## Installation
 
-    $ gem install what_karma
+    $ gem install yourkarma
 
 ## Usage
 
-    $ what_karma
+    $ yourkarma
 
 ## TODO
 
@@ -21,7 +21,7 @@ Determine connectivity, battery and connection speed for your device.
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/what_karma/fork )
+1. Fork it ( https://github.com/[my-github-username]/yourkarma/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
