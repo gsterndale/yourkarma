@@ -8,8 +8,9 @@ module YourKarma
     class ConnectionError < StandardError; end
 
     HTTP_ERRORS = [Timeout::Error, Errno::EINVAL, Errno::ECONNRESET,
-                   Errno::ETIMEDOUT, EOFError, Net::HTTPBadResponse,
-                   Net::HTTPHeaderSyntaxError, Net::ProtocolError, SocketError]
+                   Errno::ENETUNREACH, Errno::ETIMEDOUT, EOFError,
+                   Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError,
+                   Net::ProtocolError, SocketError]
 
     DEFAULT_OPTIONS = {
       timeout:   10,
