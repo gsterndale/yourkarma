@@ -13,11 +13,7 @@ Determine connectivity, battery and connection speed for your device.
 
 ## TODO
 
-  - Bar charts for connection speed and battery
-  - Option to poll until connected
-  - Display available data from yourkarma.com/dashboard
-  - Display updates/news from yourkarma.com/dashboard
-  - Display connected user count
+See [GitHub issues](https://github.com/gsterndale/yourkarma/issues) for a list of desired features and bug fixes.
 
 ## Contributing
 
