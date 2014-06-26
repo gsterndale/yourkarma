@@ -14,7 +14,7 @@ end
 
 describe "CLI::Reporter", "#report_on" do
   let(:io)        { StringIO.new }
-  let(:device)    { YourKarma::Device.new ssid: "My Karma" }
+  let(:device)    { YourKarma::Device.new ssid: "My Karma", batterypower: 30 }
   let(:benchmark) { 123.45 }
   let(:reporter)  { YourKarma::CLI::Reporter.new({ io: io, verbose: true }) }
   let!(:status)   { reporter.report_on(device, benchmark) }
@@ -26,6 +26,7 @@ describe "CLI::Reporter", "#report_on" do
     subject { io.string }
     it { should match "My Karma" }
     it { should match /123.5/ }
+    it { should match /30%/ }
   end
 end
 

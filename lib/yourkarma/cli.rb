@@ -44,10 +44,12 @@ module YourKarma
 
       def report_on(device, benchmark)
         write "Connected to '#{device.ssid}' and online!"
+        write_battery = device.batterypower && (device.batterypower <= 33 || options[:verbose])
         if options[:verbose]
           ceil = (benchmark * 10).ceil / 10.0
           write "Benchmark took less than #{ceil} seconds."
         end
+        write "Battery at #{device.batterypower}%" if write_battery
         0
       end
 
