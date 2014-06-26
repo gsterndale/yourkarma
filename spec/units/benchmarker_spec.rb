@@ -23,8 +23,8 @@ describe YourKarma::Benchmarker do
     end
 
     it "returns execution time" do
-      Benchmark.stub(:realtime) { 123.45 }
-      subject.should eq 123.45
+      Benchmark.stub(:realtime) { 1.2345 }
+      subject.should eq 1.2345 / 10.0
     end
 
     context "timing out" do

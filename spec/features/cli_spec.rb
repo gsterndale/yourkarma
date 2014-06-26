@@ -3,75 +3,141 @@ require 'webmock/rspec'
 
 describe "CLI", :vcr do
   let(:io)   { StringIO.new }
-  let(:args) { ['--timeout', '10', '--verbose'] }
+  let(:timeout) { 0.01 }
+  let(:args) { ['--timeout', timeout.to_s, '--verbose', '--no-poll'] }
   let(:cli)  { YourKarma::CLI.run(io, args) }
 
   describe "output" do
-    subject do
+    # | Connect | Speed | Battery | Charging | Bandwidth |
+    # +---------+-------+---------+----------+-----------+
+    # |   -=≡   | ==>-- | [###  } |  =D----  |    1.3 GB |
+    let(:string) do
       cli
       io.string
     end
+    let(:header) do
+      string.split("\n")
+        .first
+        .split(/\s*\|\s*/)[1..-1]
+    end
+    let(:rows) do
+      string.split("\n")[2..-1].map do |row|
+        Hash[
+          row
+          .split(/\s*\|\s*/)[1..-1]
+          .each_with_index
+          .map{|cell, i| [header[i], cell.strip] }
+        ]
+      end
+    end
+    subject { rows.first }
 
-    context "connected to a hotspot" do
-      it { should match /connected/i }
+    context "connected to a hotspot and the internet", vcr: {cassette_name: "online"} do
+      its(["Connect"]) { should eq "-=≡" }
+
+      context "with a slow connection" do
+        before do
+          Benchmark.stub(:realtime) { timeout }
+        end
+        its(["Speed"]) { should eq "(ಠ_ಠ)" }
+      end
+
+      context "with a fast connection" do
+        before do
+          Benchmark.stub(:realtime) { timeout / 100.0 }
+        end
+        its(["Speed"]) { should eq "(⌐■_■)" }
+      end
+
+      context "full battery power", vcr: {cassette_name: "full_battery"} do
+        its(["Battery"]) { should eq "[#####}" }
+      end
+
+      context "low battery power", vcr: {cassette_name: "low_battery"} do
+        its(["Battery"]) { should eq "[#    }" }
+      end
+
+      context "charging", vcr: {cassette_name: "charging"} do
+        its(["Charging"])  { should eq "=D----" }
+      end
+
+      context "not charging", vcr: {cassette_name: "not_charging"} do
+        its(["Charging"])  { should eq "X" }
+      end
     end
 
-    context "connected to the internet" do
-      it { should match "online" }
-      it { should_not match /slow/i }
-    end
-
-    context "connected to the internet with a slow connection" do
+    context "connected to a hotspot and the internet, but requests timeout", vcr: {cassette_name: "online_timeout"} do
       before do
         stub_request(:any, /.*yourkarma.com\/dashboard.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should match /slow/i }
+      its(["Connect"]) { should eq "-=" }
+      its(["Speed"])   { should eq ":(" }
     end
 
-    context "connected to a hotspot without an assigned WAN IP address" do
+    context "connected to a hotspot, but not to the internet", vcr: {cassette_name: "no_wan"} do
       before do
         stub_request(:any, /.*yourkarma.com\/dashboard.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should match /acquiring IP address/i }
-      it { should_not match "Fail" }
+
+      its(["Connect"])   { should eq "-" }
+      its(["Speed"])     { should eq ":X" }
     end
 
-    context "not connected to a hotspot" do
+    context "not connected to a hotspot", vcr: {cassette_name: "offline"} do
       before do
         stub_request(:any, /.*yourkarma.com.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should match /Not connected/i }
-      it { should match "Fail" }
+      its(["Connect"])   { should eq "" }
+      its(["Speed"])     { should eq ":X" }
+      its(["Battery"])   { should eq "[?????}" }
+      its(["Charging"])  { should eq "?" }
+    end
+
+    context "polling", vcr: { allow_playback_repeats: true, cassette_name: "online"} do
+      subject { rows }
+      let(:args) { ['--timeout', timeout.to_s, '--verbose', '--count', '2', '--no-tail'] }
+      it { should have(1).elements }
+
+      context "tailing" do
+        let(:args) { ['--timeout', timeout.to_s, '--verbose', '--count', '2', '--tail'] }
+        it { should have(2).elements }
+      end
     end
   end
 
   describe "status code" do
     subject { cli }
 
-    context "connected to the internet" do
+    context "connected to a hotspot and the internet", vcr: {cassette_name: "online"} do
       it { should be 0 }
+
+      context "with a slow connection" do
+        before do
+          Benchmark.stub(:realtime) { timeout }
+        end
+        it { should be 0 }
+      end
     end
 
-    context "connected to the internet with a slow connection" do
+    context "connected to a hotspot and the internet, but requests timeout", vcr: {cassette_name: "online_timeout"} do
       before do
         stub_request(:any, /.*yourkarma.com\/dashboard.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should be 1 }
+      it { should be 3 }
     end
 
-    context "connected to a hotspot without an assigned WAN IP address" do
+    context "connected to a hotspot, but not to the internet", vcr: {cassette_name: "no_wan"} do
       before do
         stub_request(:any, /.*yourkarma.com\/dashboard.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should be 1 }
+      it { should be 3 }
     end
 
-    context "not connected to a hotspot" do
+    context "not connected to a hotspot", vcr: {cassette_name: "offline"} do
       before do
         stub_request(:any, /.*yourkarma.com.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should be 1 }
+      it { should be 3 }
     end
   end
 end
-

@@ -14,49 +14,84 @@ end
 
 describe "CLI::Reporter", "#report_on" do
   let(:io)        { StringIO.new }
-  let(:device)    { YourKarma::Device.new ssid: "My Karma", batterypower: 30 }
-  let(:benchmark) { 123.45 }
+  let(:device)    { YourKarma::Device.new batterypower: 30 }
+  let(:benchmark) { 0.123 }
   let(:reporter)  { YourKarma::CLI::Reporter.new({ io: io, verbose: true }) }
-  let!(:status)   { reporter.report_on(device, benchmark) }
-  subject { status }
+  let(:status)    { reporter.report_on(device, benchmark) }
+  before do
+    status
+  end
 
-  it { should be 0 }
+  describe "status" do
+    subject { status }
+    it { should be 0 }
+
+    context "without benchmark" do
+      let(:benchmark) { nil }
+      it { should be 3 }
+    end
+  end
 
   describe "io" do
     subject { io.string }
-    it { should match "My Karma" }
-    it { should match /123.5/ }
-    it { should match /30%/ }
+    it { should include "-=≡" }
+    it { should include "(⌐■_■)" }
+    it { should include "[#    }" }
+    it { should include "X" }
   end
 end
 
-describe "CLI::Reporter", "#report_connectivity_failure" do
+describe "CLI::Reporter", "#report_progress" do
   let(:io)        { StringIO.new }
   let(:reporter)  { YourKarma::CLI::Reporter.new({ io: io }) }
-  let(:message)   { "Whoops" }
-  let!(:status)   { reporter.report_connectivity_failure(message) }
-  subject { status }
+  subject { io.string }
 
-  it { should be 1 }
+  before do
+    reporter.report_progress
+  end
 
-  describe "io" do
-    subject { io.string }
-    it { should match "Not connected" }
+  it { should_not include "." }
+
+  context "after reporting on" do
+    before do
+      reporter.report_on(nil, nil)
+      reporter.report_progress
+    end
+    it { should include "." }
   end
 end
 
-describe "CLI::Reporter", "#report_benchmark_failure_on" do
+describe "CLI::Reporter", "#report_error" do
   let(:io)        { StringIO.new }
-  let(:device)    { YourKarma::Device.new ssid: "My Karma", ipaddress: "192.168.1.1" }
   let(:reporter)  { YourKarma::CLI::Reporter.new({ io: io }) }
-  let!(:status)   { reporter.report_benchmark_failure_on(device) }
+  subject { io.string }
+
+  before do
+    reporter.report_error
+  end
+
+  it { should_not include "*" }
+
+  context "after reporting on" do
+    before do
+      reporter.report_on(nil, nil)
+      reporter.report_error
+    end
+    it { should include "*" }
+  end
+end
+
+describe "CLI::Reporter", "#report_quit" do
+  let(:io)        { StringIO.new }
+  let(:reporter)  { YourKarma::CLI::Reporter.new({ io: io }) }
+  let(:code)      { 123 }
+  let(:status)    { reporter.report_quit code }
   subject { status }
 
-  it { should be 1 }
+  it { should eq code }
 
-  describe "io" do
-    subject { io.string }
-    it { should match "My Karma" }
-    it { should match "slow" }
+  context "nil code" do
+    let(:code) { nil }
+    it { should eq 1 }
   end
 end

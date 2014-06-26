@@ -3,14 +3,16 @@ require 'spec_helper'
 describe YourKarma::Client do
   describe "#options" do
     let(:client)  { YourKarma::Client.new }
-    subject       { client.options } 
+    subject       { client.options }
     its([:url])  { should match "yourkarma.com" }
   end
 
   describe "#get" do
-    let(:client)    { YourKarma::Client.new(url: "example.com") }
-    let(:response)  { double :response, body: '{"device": {"foo": "bar"}}' }
-    subject         { client.get }
+    let(:client)      { YourKarma::Client.new(url: "example.com") }
+    let(:status_code) { '200' }
+    let(:body)        { '{"device": {"foo": "bar"}}' }
+    let(:response)    { double :response, body: body, code: status_code }
+    subject           { client.get }
     before do
       Net::HTTP.stub(:get_response) { response }
     end
@@ -33,6 +35,13 @@ describe YourKarma::Client do
       end
     end
 
+    context "with an unsuccessfull HTTP status code" do
+      let(:status_code) { '500' }
+      it "raises ConnectionError" do
+        expect(-> { subject }).to raise_error YourKarma::Client::ConnectionError
+      end
+    end
+
     context "with an HTTP error" do
       before do
         Net::HTTP.stub(:get_response) { raise SocketError }
@@ -44,8 +53,7 @@ describe YourKarma::Client do
     end
 
     context "with bad JSON" do
-      let(:response)  { double :response, body: '{ WRONG }' }
-
+      let(:body) { '{ WRONG }' }
       it "raises BadResponseError" do
         expect(-> { subject }).to raise_error YourKarma::Client::BadResponseError
       end

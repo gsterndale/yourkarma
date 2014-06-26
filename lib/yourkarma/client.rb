@@ -29,6 +29,7 @@ module YourKarma
       Timeout::timeout(options[:timeout]) do
         response = Net::HTTP.get_response(uri)
       end
+      raise ConnectionError unless response.code == '200'
       JSON::load(response.body).fetch("device")
     rescue *HTTP_ERRORS => e
       raise ConnectionError, e.message

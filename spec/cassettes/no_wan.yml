@@ -42,4 +42,46 @@ http_interactions:
         Wi-Fi\",\"users\":1}}}\r\n"
     http_version: 
   recorded_at: Thu, 01 May 2014 12:46:25 GMT
+- request:
+    method: get
+    uri: http://hotspot.yourkarma.com/api/status.json
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - hotspot.yourkarma.com
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Content-Type:
+      - text/html
+      Cache-Control:
+      - public
+      Pragma:
+      - cache
+      Expires:
+      - Sat, 28 Jun 2014 00:07:42 GMT
+      Date:
+      - Fri, 27 Jun 2014 23:37:42 GMT
+      Last-Modified:
+      - Fri, 27 Jun 2014 23:37:42 GMT
+      Accept-Ranges:
+      - bytes
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: "<html>\n<head>\n  <title>404 Not Found</title>\n</head>\n<body bgcolor=\"ffffff\">\n
+        \ <h2>404 Not Found<h2>\n  <p>\n  \n</body>\n</html>\n"
+    http_version: 
+  recorded_at: Fri, 27 Jun 2014 23:37:43 GMT
 recorded_with: VCR 2.9.0

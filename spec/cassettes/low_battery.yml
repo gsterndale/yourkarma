@@ -33,15 +33,15 @@ http_interactions:
       Transfer-Encoding:
       - chunked
       Date:
-      - Wed, 30 Apr 2014 22:02:23 GMT
+      - Wed, 30 Apr 2014 22:02:24 GMT
       Server:
       - lighttpd/1.4.30-devel-4855
     body:
       encoding: UTF-8
-      string: "{\"device\":{\"name\":\"IMW-C918W\",\"swversion\":\"R4855\",\"hwversion\":\"R06\",\"uptime\":\"P0Y0M0DT0H4M36S\",\"batterypower\":100,\"charging\":false,\"waninterface\":{\"macaddress\":\"001E312C42D0\",\"ipaddress\":\"74.60.178.162\",\"bsid\":\"00:00:02:07:44:E9\",\"rssi\":-75,\"cinr\":20,\"connectionduration\":\"P0Y0M0DT0H0M17S\"},\"wifiinterface\":{\"ssid\":\"Karma
+      string: "{\"device\":{\"name\":\"IMW-C918W\",\"swversion\":\"R4855\",\"hwversion\":\"R06\",\"uptime\":\"P0Y0M0DT0H4M37S\",\"batterypower\":30,\"charging\":false,\"waninterface\":{\"macaddress\":\"001E312C42D0\",\"ipaddress\":\"74.60.178.162\",\"bsid\":\"00:00:02:07:44:E9\",\"rssi\":-75,\"cinr\":21,\"connectionduration\":\"P0Y0M0DT0H0M18S\"},\"wifiinterface\":{\"ssid\":\"Karma
         Wi-Fi\",\"users\":1}}}\r\n"
-    http_version: 
-  recorded_at: Thu, 01 May 2014 12:49:45 GMT
+    http_version:
+  recorded_at: Thu, 01 May 2014 12:49:46 GMT
 - request:
     method: get
     uri: http://yourkarma.com/dashboard
@@ -65,7 +65,7 @@ http_interactions:
       Content-Type:
       - text/html
       Date:
-      - Thu, 01 May 2014 12:49:45 GMT
+      - Thu, 01 May 2014 12:49:46 GMT
       Location:
       - https://yourkarma.com/dashboard
       Server:
@@ -81,6 +81,6 @@ http_interactions:
     body:
       encoding: UTF-8
       string: ''
-    http_version: 
-  recorded_at: Thu, 01 May 2014 12:49:46 GMT
+    http_version:
+  recorded_at: Thu, 01 May 2014 12:49:47 GMT
 recorded_with: VCR 2.9.0

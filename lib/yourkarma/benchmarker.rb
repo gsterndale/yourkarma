@@ -26,9 +26,10 @@ module YourKarma
     def benchmark
       uri = URI(options[:benchmark])
       Timeout::timeout(options[:timeout]) do
-        return Benchmark.realtime do
+        duration = Benchmark.realtime do
           Net::HTTP.get_response(uri)
         end
+        return duration / options[:timeout].to_f
       end
     rescue *HTTP_ERRORS => e
       raise ConnectionError
