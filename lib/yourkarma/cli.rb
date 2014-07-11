@@ -62,8 +62,8 @@ module YourKarma
       end
 
       def report_header
-        write "| Connect | Speed | Battery | Charging | Bandwidth |\n"
-        write "+---------+-------+---------+----------+-----------+\n"
+        write "| Connect | Speed | Battery | Charging |\n"
+        write "+---------+-------+---------+----------+\n"
       end
 
       def report_progress
@@ -83,7 +83,6 @@ module YourKarma
           pad( 7,     speed(device, benchmark)),
           pad( 9,   battery(device, benchmark)),
           pad(10,  charging(device, benchmark)),
-          pad(11, bandwidth(device, benchmark)),
           " "
         ].join "|"
         status_code(device, benchmark)
