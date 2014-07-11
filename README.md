@@ -10,6 +10,9 @@ Determine connectivity, battery and connection speed for your device.
 ## Usage
 
     $ yourkarma
+    | Connect | Speed | Battery | Charging |
+    +---------+-------+---------+----------+
+    |   -=≡   | (⌐■_■)| [###  } |     X    |
 
 ## TODO
 
