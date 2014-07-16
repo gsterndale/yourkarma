@@ -6,7 +6,7 @@ describe "YourKarma::CLI::ArgumentParser" do
   describe "#parse" do
     let(:arguments) { ["--url", "http://example.com"] }
     subject { cli.parse(arguments) }
-    its([:verbose]) { should be_false }
+    its([:verbose]) { should be false }
     its([:url])     { should eq "http://example.com"}
 
     context "help argument" do

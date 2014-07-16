@@ -19,11 +19,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 1.6"
+  spec.add_development_dependency "bundler",    "~> 1.6"
   spec.add_development_dependency "rake"
-  spec.add_development_dependency "rspec",    "~> 2.1"
-  spec.add_development_dependency "webmock",  "~> 1.15"
-  spec.add_development_dependency "vcr",      "~> 2.9"
+  spec.add_development_dependency "rspec",      "~> 2.99"
+  spec.add_development_dependency "rspec-its",  "~> 1"
+  spec.add_development_dependency "webmock",    "~> 1.15"
+  spec.add_development_dependency "vcr",        "~> 2.9"
 
   # Release every merge to master as a prerelease
   spec.version = "#{spec.version}.pre#{ENV['TRAVIS_BUILD_NUMBER']}" if ENV['TRAVIS']

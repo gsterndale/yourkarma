@@ -94,13 +94,13 @@ describe "CLI", :vcr do
     end
 
     context "polling", vcr: { allow_playback_repeats: true, cassette_name: "online"} do
-      subject { rows }
+      subject { rows.size }
       let(:args) { ['--timeout', timeout.to_s, '--verbose', '--count', '2', '--no-tail'] }
-      it { should have(1).elements }
+      it { should be 1 }
 
       context "tailing" do
         let(:args) { ['--timeout', timeout.to_s, '--verbose', '--count', '2', '--tail'] }
-        it { should have(2).elements }
+        it { should be 2 }
       end
     end
   end

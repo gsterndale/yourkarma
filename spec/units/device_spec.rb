@@ -12,10 +12,10 @@ end
 describe YourKarma::Device, "#valid_ipaddress?" do
   context "with a real IP address" do
     subject { YourKarma::Device.new 'ipaddress' => "127.0.0.1" }
-    its(:valid_ipaddress?) { should be_true }
+    its(:valid_ipaddress?) { should be_truthy }
   end
   context "with a real IP address" do
     subject { YourKarma::Device.new 'ipaddress' => "N/A" }
-    its(:valid_ipaddress?) { should be_false }
+    its(:valid_ipaddress?) { should be_falsey }
   end
 end
