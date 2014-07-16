@@ -13,7 +13,7 @@ describe YourKarma::Benchmarker do
     let(:response)    { double :response }
     subject           { benchmarker.benchmark }
     before do
-      Net::HTTP.stub(:get_response) { response }
+      allow(Net::HTTP).to receive_messages(get_response: response)
     end
 
     it "makes request to url" do
@@ -23,13 +23,13 @@ describe YourKarma::Benchmarker do
     end
 
     it "returns execution time" do
-      Benchmark.stub(:realtime) { 1.2345 }
-      subject.should eq 1.2345 / 10.0
+      allow(Benchmark).to receive_messages(realtime: 1.2345)
+      expect(subject).to eq 1.2345 / 10.0
     end
 
     context "timing out" do
       before do
-        Timeout.stub(:timeout) { raise Timeout::Error }
+        allow(Timeout).to receive(:timeout).and_raise(Timeout::Error)
       end
 
       it "raises ConnectionError" do
@@ -39,7 +39,7 @@ describe YourKarma::Benchmarker do
 
     context "with an HTTP error" do
       before do
-        Net::HTTP.stub(:get_response) { raise SocketError }
+        allow(Net::HTTP).to receive(:get_response).and_raise(SocketError)
       end
 
       it "raises ConnectionError" do

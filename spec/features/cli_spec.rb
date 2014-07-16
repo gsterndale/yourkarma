@@ -37,14 +37,14 @@ describe "CLI", :vcr do
 
       context "with a slow connection" do
         before do
-          Benchmark.stub(:realtime) { timeout }
+          allow(Benchmark).to receive_messages(realtime: timeout)
         end
         its(["Speed"]) { should eq "(ಠ_ಠ)" }
       end
 
       context "with a fast connection" do
         before do
-          Benchmark.stub(:realtime) { timeout / 100.0 }
+          allow(Benchmark).to receive_messages(realtime: timeout / 100.0 )
         end
         its(["Speed"]) { should eq "(⌐■_■)" }
       end
@@ -96,11 +96,11 @@ describe "CLI", :vcr do
     context "polling", vcr: { allow_playback_repeats: true, cassette_name: "online"} do
       subject { rows.size }
       let(:args) { ['--timeout', timeout.to_s, '--verbose', '--count', '2', '--no-tail'] }
-      it { should be 1 }
+      it { is_expected.to be 1 }
 
       context "tailing" do
         let(:args) { ['--timeout', timeout.to_s, '--verbose', '--count', '2', '--tail'] }
-        it { should be 2 }
+        it { is_expected.to be 2 }
       end
     end
   end
@@ -109,13 +109,13 @@ describe "CLI", :vcr do
     subject { cli }
 
     context "connected to a hotspot and the internet", vcr: {cassette_name: "online"} do
-      it { should be 0 }
+      it { is_expected.to be 0 }
 
       context "with a slow connection" do
         before do
-          Benchmark.stub(:realtime) { timeout }
+          allow(Benchmark).to receive_messages(realtime: timeout)
         end
-        it { should be 0 }
+        it { is_expected.to be 0 }
       end
     end
 
@@ -123,21 +123,21 @@ describe "CLI", :vcr do
       before do
         stub_request(:any, /.*yourkarma.com\/dashboard.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should be 3 }
+      it { is_expected.to be 3 }
     end
 
     context "connected to a hotspot, but not to the internet", vcr: {cassette_name: "no_wan"} do
       before do
         stub_request(:any, /.*yourkarma.com\/dashboard.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should be 3 }
+      it { is_expected.to be 3 }
     end
 
     context "not connected to a hotspot", vcr: {cassette_name: "offline"} do
       before do
         stub_request(:any, /.*yourkarma.com.*/).to_raise(Timeout::Error.new "Fail")
       end
-      it { should be 3 }
+      it { is_expected.to be 3 }
     end
   end
 end

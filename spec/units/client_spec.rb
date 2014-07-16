@@ -14,7 +14,7 @@ describe YourKarma::Client do
     let(:response)    { double :response, body: body, code: status_code }
     subject           { client.get }
     before do
-      Net::HTTP.stub(:get_response) { response }
+      allow(Net::HTTP).to receive_messages(get_response: response)
     end
 
     its(['foo']) { should eq 'bar' }
@@ -27,7 +27,7 @@ describe YourKarma::Client do
 
     context "timing out" do
       before do
-        Net::HTTP.stub(:get_response) { raise Timeout::Error }
+        allow(Net::HTTP).to receive(:get_response).and_raise(Timeout::Error)
       end
 
       it "raises ConnectionError" do
@@ -44,7 +44,7 @@ describe YourKarma::Client do
 
     context "with an HTTP error" do
       before do
-        Net::HTTP.stub(:get_response) { raise SocketError }
+        allow(Net::HTTP).to receive(:get_response).and_raise(SocketError)
       end
 
       it "raises ConnectionError" do

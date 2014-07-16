@@ -14,10 +14,10 @@ describe "CLI", ".run" do
     argument_parser = double(:argument_parser, parse: options )
     exit_code       = double(:exit_code)
     cli             = double(:cli, run: exit_code)
-    YourKarma::CLI::ArgumentParser.stub(:new) { argument_parser }
-    YourKarma::CLI.stub(:new) { cli }
+    allow(YourKarma::CLI::ArgumentParser).to receive_messages(new: argument_parser)
+    allow(YourKarma::CLI).to receive_messages(new: cli)
     YourKarma::CLI.run io, arguments
-    expect(cli).to have_received(:run).with { { io: io } }
+    expect(cli).to have_received(:run)
   end
 end
 
@@ -34,10 +34,10 @@ describe "CLI", "#run" do
                          report_progress: nil,
                          report_on:       exit_code,
                          report_quit:     exit_code)
-    YourKarma::Client.stub(:new)        { client }
-    YourKarma::Device.stub(:new)        { device }
-    YourKarma::Benchmarker.stub(:new)   { benchmarker }
-    YourKarma::CLI::Reporter.stub(:new) { reporter }
+    allow(YourKarma::Client).to         receive_messages(new: client )
+    allow(YourKarma::Device).to         receive_messages(new: device )
+    allow(YourKarma::Benchmarker).to    receive_messages(new: benchmarker )
+    allow(YourKarma::CLI::Reporter).to  receive_messages(new: reporter )
     cli = YourKarma::CLI.new iterations: iterations
     response = cli.run
     expect(reporter).to have_received(:report_header).once

@@ -24,20 +24,20 @@ describe "CLI::Reporter", "#report_on" do
 
   describe "status" do
     subject { status }
-    it { should be 0 }
+    it { is_expected.to be 0 }
 
     context "without benchmark" do
       let(:benchmark) { nil }
-      it { should be 3 }
+      it { is_expected.to be 3 }
     end
   end
 
   describe "io" do
     subject { io.string }
-    it { should include "-=≡" }
-    it { should include "(⌐■_■)" }
-    it { should include "[#    }" }
-    it { should include "X" }
+    it { is_expected.to include "-=≡" }
+    it { is_expected.to include "(⌐■_■)" }
+    it { is_expected.to include "[#    }" }
+    it { is_expected.to include "X" }
   end
 end
 
@@ -50,14 +50,14 @@ describe "CLI::Reporter", "#report_progress" do
     reporter.report_progress
   end
 
-  it { should_not include "." }
+  it { is_expected.not_to include "." }
 
   context "after reporting on" do
     before do
       reporter.report_on(nil, nil)
       reporter.report_progress
     end
-    it { should include "." }
+    it { is_expected.to include "." }
   end
 end
 
@@ -70,14 +70,14 @@ describe "CLI::Reporter", "#report_error" do
     reporter.report_error
   end
 
-  it { should_not include "*" }
+  it { is_expected.not_to include "*" }
 
   context "after reporting on" do
     before do
       reporter.report_on(nil, nil)
       reporter.report_error
     end
-    it { should include "*" }
+    it { is_expected.to include "*" }
   end
 end
 
@@ -88,10 +88,10 @@ describe "CLI::Reporter", "#report_quit" do
   let(:status)    { reporter.report_quit code }
   subject { status }
 
-  it { should eq code }
+  it { is_expected.to eq code }
 
   context "nil code" do
     let(:code) { nil }
-    it { should eq 1 }
+    it { is_expected.to eq 1 }
   end
 end
