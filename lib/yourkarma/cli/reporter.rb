@@ -11,8 +11,8 @@ module YourKarma
       end
 
       def report_header
-        write "| Connect | Speed | Battery | Charging |\n"
-        write "+---------+-------+---------+----------+\n"
+        write "| Connect | Speed | Battery | Charging | Users |\n"
+        write "+---------+-------+---------+----------+-------+\n"
       end
 
       def report_progress
@@ -32,6 +32,7 @@ module YourKarma
           pad( 7,     speed(device, benchmark)),
           pad( 9,   battery(device, benchmark)),
           pad(10,  charging(device, benchmark)),
+          pad(7,      users(device, benchmark)),
           " "
         ].join "|"
         status_code(device, benchmark)
@@ -89,8 +90,9 @@ module YourKarma
         device.charging ? "=D----" : "X"
       end
 
-      def bandwidth(device, benchmark)
-        "1.3 GB"
+      def users(device, benchmark)
+        return '?' unless device && device.users
+        device.users.to_s
       end
 
       def status_code(device, benchmark)

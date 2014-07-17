@@ -8,9 +8,9 @@ describe "CLI", :vcr do
   let(:cli)  { YourKarma::CLI.run(io, args) }
 
   describe "output" do
-    # | Connect | Speed | Battery | Charging |
-    # +---------+-------+---------+----------+
-    # |   -=≡   | ==>-- | [###  } |  =D----  |
+    # | Connect | Speed | Battery | Charging | Users |
+    # +---------+-------+---------+----------+-------+
+    # |   -=≡   | ==>-- | [###  } |  =D----  |   1   |
     let(:string) do
       cli
       io.string
@@ -64,6 +64,10 @@ describe "CLI", :vcr do
       context "not charging", vcr: {cassette_name: "not_charging"} do
         its(["Charging"])  { should eq "X" }
       end
+
+      context "multiple users", vcr: {cassette_name: "multiple_users"} do
+        its(["Users"])  { should eq "3" }
+      end
     end
 
     context "connected to a hotspot and the internet, but requests timeout", vcr: {cassette_name: "online_timeout"} do
@@ -91,6 +95,7 @@ describe "CLI", :vcr do
       its(["Speed"])     { should eq ":X" }
       its(["Battery"])   { should eq "[?????}" }
       its(["Charging"])  { should eq "?" }
+      its(["Users"])     { should eq "?" }
     end
 
     context "polling", vcr: { allow_playback_repeats: true, cassette_name: "online"} do

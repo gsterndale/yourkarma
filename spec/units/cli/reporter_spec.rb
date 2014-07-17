@@ -14,7 +14,7 @@ end
 
 describe "CLI::Reporter", "#report_on" do
   let(:io)        { StringIO.new }
-  let(:device)    { YourKarma::Device.new batterypower: 30 }
+  let(:device)    { YourKarma::Device.new batterypower: 30, users: 8 }
   let(:benchmark) { 0.123 }
   let(:reporter)  { YourKarma::CLI::Reporter.new({ io: io, verbose: true }) }
   let(:status)    { reporter.report_on(device, benchmark) }
@@ -38,6 +38,7 @@ describe "CLI::Reporter", "#report_on" do
     it { is_expected.to include "(⌐■_■)" }
     it { is_expected.to include "[#    }" }
     it { is_expected.to include "X" }
+    it { is_expected.to include "8" }
   end
 end
 
