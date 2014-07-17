@@ -37,6 +37,9 @@ module YourKarma
             options[:poll] = p
             options[:iterations] = 1 unless p
           end
+          opts.on('-x', '--[no-]exit-on-success', 'Exit upon successful connection') do |e|
+            options[:exit_on_success] = e
+          end
           opts.on('--[no-]tail', 'Tail log') do |t|
             options[:tail] = t
           end

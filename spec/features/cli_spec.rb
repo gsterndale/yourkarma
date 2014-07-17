@@ -8,9 +8,9 @@ describe "CLI", :vcr do
   let(:cli)  { YourKarma::CLI.run(io, args) }
 
   describe "output" do
-    # | Connect | Speed | Battery | Charging | Bandwidth |
-    # +---------+-------+---------+----------+-----------+
-    # |   -=≡   | ==>-- | [###  } |  =D----  |    1.3 GB |
+    # | Connect | Speed | Battery | Charging |
+    # +---------+-------+---------+----------+
+    # |   -=≡   | ==>-- | [###  } |  =D----  |
     let(:string) do
       cli
       io.string
@@ -101,6 +101,11 @@ describe "CLI", :vcr do
       context "tailing" do
         let(:args) { ['--timeout', timeout.to_s, '--verbose', '--count', '2', '--tail'] }
         it { is_expected.to be 2 }
+      end
+
+      context "exit on success" do
+        let(:args) { ['--timeout', timeout.to_s, '--verbose', '--count', '9', '--tail', '--exit-on-success'] }
+        it { is_expected.to be 1 }
       end
     end
   end

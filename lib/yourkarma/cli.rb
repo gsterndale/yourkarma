@@ -31,6 +31,7 @@ module YourKarma
       (1..iterations).each do
         begin
           code = run_once(client, benchmarker, reporter)
+          break if code == 0 && options[:exit_on_success]
         rescue Interrupt
           break
         end
